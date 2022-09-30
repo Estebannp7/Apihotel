@@ -19,9 +19,11 @@ export class ControladorReservas{
     }
 
     buscarReservasPorId(request,response){
+        let id = request.params.idReserva
+
         try {
             response.status(200).json({
-                "mensaje":"exito en la consulta de reserva",
+                "mensaje":"exito en la consulta de reserva" + id,
                 "datos":"AQUI VAN LOS DATOS DE LA RESERVA"
             })  
             
@@ -34,6 +36,7 @@ export class ControladorReservas{
     }
 
     registrarReservas(request,response){
+        let datosReserva = request.body
         try {
             response.status(200).json({
                 "mensaje":"exito agregando reserva ",
@@ -49,11 +52,14 @@ export class ControladorReservas{
     }
 
     editarReservas(request,response){
-        response.send("estoy editando una reservas desde el controlador")
+        let id = request.params.idHabitacion
+        let datosReserva = request.body
+        console.log(id,datosReserva)
+        
         try {
             response.status(200).json({
-                "mensaje":"exito en la edicion",
-                "datos":null
+                "mensaje":"exito en la edicion" + id,
+                "datos":datosReserva
             })  
             
         } catch (error) {
