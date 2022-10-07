@@ -1,14 +1,16 @@
+import { ServicioReserva } from '../services/servicioReserva.js'
 
 export class ControladorReservas{
 
 
     constructor(){}
 
-    buscarReservas(request,response){
+   async buscarReservas(request,response){
+    let objetoServicioReserva = new ServicioReserva()
         try {
             response.status(200).json({
                 "mensaje":"exito en la consulta de reservas",
-                "datos":"AQUI VAN LOS DATOS DE LAS RESERVAS"
+                "datos":await objetoServicioReserva.buscarReservas()
             })  
             
         } catch (error) {
@@ -19,13 +21,14 @@ export class ControladorReservas{
         }
     }
 
-    buscarReservasPorId(request,response){
+    async buscarReservasPorId(request,response){
         let id = request.params.idReserva
+        let objetoServicioReserva = new ServicioReserva()
 
         try {
             response.status(200).json({
                 "mensaje":"exito en la consulta de reserva" + id,
-                "datos":"AQUI VAN LOS DATOS DE LA RESERVA"
+                "datos": await objetoServicioReserva.buscarReservasPorId(id)
             })  
             
         } catch (error) {
@@ -36,9 +39,13 @@ export class ControladorReservas{
         }
     }
 
-    registrarReservas(request,response){
+    async registrarReservas(request,response){
         let datosReserva = request.body
+        let objetoServicioReserva = new ServicioReserva()
+
+
         try {
+            await objetoServicioReserva.agregarR(datosReserva)
             response.status(200).json({
                 "mensaje":"exito agregando reserva ",
                 "datos":null
@@ -52,12 +59,12 @@ export class ControladorReservas{
         }
     }
 
-    editarReservas(request,response){
+    async editarReservas(request,response){
         let id = request.params.idHabitacion
         let datosReserva = request.body
-        console.log(id,datosReserva)
-        
+        let objetoServicioReserva = new ServicioReserva()
         try {
+            await objetoServicioReserva.editarReservas(id,datosReserva)
             response.status(200).json({
                 "mensaje":"exito en la edicion" + id,
                 "datos":datosReserva
