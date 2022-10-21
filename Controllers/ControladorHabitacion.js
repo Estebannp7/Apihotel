@@ -45,12 +45,21 @@ export class ControladorHabitacion{
         let objetoServicioHabitacion = new ServicioHabitacion()
         
         try {
-            await objetoServicioHabitacion.agregarHabitacionEnBd(datosHabitacion)
-            response.status(200).json({
-                "mensaje":"exito agregando habitacion",
-                "datos":null
-            })  
-            
+            if(datosHabitacion.numeroMaximoPersonas<8){
+
+                await objetoServicioHabitacion.agregarHabitacionEnBd(datosHabitacion)
+
+                response.status(200).json({
+                "mensaje":"exito registrando habitacion",
+                "datos":null,
+                })
+
+            }else{
+                response.status(400).json({
+                    "mensaje":"Solo se permiten 8 personas en esta habitación",
+                    "datos":null,
+                    })
+            }
         } catch (error) {
             response.status(400).json({
                 "mensaje":"error en la consulta" +error,
