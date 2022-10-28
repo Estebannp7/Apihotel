@@ -46,13 +46,13 @@ export class ControladorReservas{
         console.log(datosreserva);
         try{
             let datos__habitacion = await objetoServicioHabitacion.buscarHabitacionPorId(datosreserva.id)
-            console.log(datos__habitacion)
             let maxPersonas = datos__habitacion.numeroMaximoPersonas
-            let numeroPersonas = Number (datosreserva.numeroNinos) + Number(datosreserva.numeroAdultos)
+            let numeroPersonas = Number(datosreserva.numeroNinos) + Number(datosreserva.numeroAdultos)
             let entrada = new Date(datosreserva.fechaEntrada)
             let salida = new Date(datosreserva.fechaSalida)
-            const diffInDays = Math.floor((entrada - salida  ) / (1000 * 60 * 60 * 24));
+            const diffInDays = Math.floor((salida - entrada ) / (1000 * 60 * 60 * 24));
             let costo=0
+            console.log("numero personas ",maxPersonas , numeroPersonas);
             if(diffInDays >0 ){
                 if(maxPersonas >= numeroPersonas){
                     costo = Number(datos__habitacion.valorNoche)*Number(diffInDays);
@@ -60,11 +60,11 @@ export class ControladorReservas{
                     await objetoServicioReserva.agregarR(datosreserva)
                     response.status(200).json({
                         "mensaje":"exito registrando la reserva",
-                        "datos":null
+                        "datos":null,
                     })
                 }else {
                     response.status(400).json({
-                        "mensaje":"No hay espacio pa tantas personas",
+                        "mensaje":"No caben tantas personas",
                         "datos":null,
                         "estado":true
                     })
@@ -80,12 +80,13 @@ export class ControladorReservas{
             
         }catch(error){
             response.status(400).json({
-                "mensaje":"error en la reserva"+error,
+                "mensaje":"error en la reserva "+error,
                 "datos":null,
                 "estado":true
             })
         }
     }
+
     async editarReservas(request,response){
         let idr = request.params.idreserva
         let datosReserva=request.body
