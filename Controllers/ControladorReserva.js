@@ -72,7 +72,7 @@ export class ControladorReservas{
                 
             }else {
                 response.status(400).json({
-                    "mensaje":"No se pueden reservar tantos días en esta habitación",
+                    "mensaje":"No se pueden reservar tantos días en esta habitación"+error,
                     "datos":null,
                     "estado":true
                 })
